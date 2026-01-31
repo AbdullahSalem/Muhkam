@@ -9,7 +9,7 @@
 }
 
 :root {
-    --hard-color: #4e5a4c;
+    --hard-color: rgba(140, 160, 141, 0);
     /* default hard page color */
 }
 
@@ -163,7 +163,7 @@ body {
     z-index: 9999;
 
     background: #ffffff;
-    border: 2px solid var(--hard-color, #4e5a4c);
+    border: 2px solid var(--hard-color, rgba(140, 160, 141, 0));
     border-radius: 12px;
 
     padding: 12px 14px;
@@ -194,7 +194,7 @@ body {
     text-align: right;
 
     border-radius: 8px;
-    border: 1.5px solid var(--hard-color, #4e5a4c);
+    border: 1.5px solid var(--hard-color, rgba(140, 160, 141, 0));
     background-color: #fafafa;
 
     outline: none;
@@ -219,7 +219,7 @@ body {
 /* Surah selector */
 .surah-controls {
     background: #fff;
-    border: 2px solid var(--hard-color, #4e5a4c);
+    border: 2px solid var(--hard-color, rgba(140, 160, 141, 0));
     border-radius: 12px;
     padding: 12px 14px;
     margin-bottom: 12px;
@@ -240,7 +240,7 @@ body {
     padding: 8px;
     font-size: 16px;
     border-radius: 8px;
-    border: 1.5px solid var(--hard-color, #4e5a4c);
+    border: 1.5px solid var(--hard-color, rgba(140, 160, 141, 0));
     background-color: #fafafa;
     text-align: right;
     direction: rtl;
@@ -281,7 +281,7 @@ body {
 .audio-player {
     width: 220px;
     background: #fff;
-    border: 2px solid var(--hard-color, #4e5a4c);
+    border: 2px solid var(--hard-color, rgba(140, 160, 141, 0));
     border-radius: 12px;
     padding: 12px 14px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
@@ -319,7 +319,7 @@ body {
     padding: 6px 0;
     font-size: 18px;
     border: none;
-    background-color: var(--hard-color, #4e5a4c);
+    background-color: var(--hard-color, rgba(140, 160, 141, 0));
     color: #fff;
     border-radius: 8px;
     cursor: pointer;
@@ -338,3 +338,4 @@ body {
     letter-spacing: 0.5px;
 
 }
+
