@@ -105,6 +105,7 @@
         </div>
 
         <div class="audio-player">
+
           <div class="audio-title">مشغل التلاوة</div>
           <div class="audio-title">القارئ أحمد كاسب</div>
           <div class="track-name" id="trackName">اختر سورة لتشغيلها</div>
@@ -115,6 +116,8 @@
             <button id="forward">❯❯</button>
           </div>
           <audio id="surahAudio"></audio>
+          <audio id="surahAudio" preload="auto"></audio>
+
           <div id="timer">
             <span id="current">0:00</span> / <span id="duration">0:00</span>
           </div>
@@ -336,6 +339,8 @@
       const currentTimeEl = document.getElementById("current");
       const durationEl = document.getElementById("duration");
 
+      const ARCHIVE_BASE = "https://archive.org/download/muhkam_202601/";
+
       let isPlaying = false;
 
       // Populate selector
@@ -352,10 +357,13 @@
         const surahNumber = parseInt(surahSelect.value, 10);
         const surah = surahs.find(s => s.number === surahNumber);
         const turnPage = (TOTAL_PAGES - surah.page) + 4;
+
         $(".flipbook").turn("page", 2);
         setTimeout(() => $(".flipbook").turn("page", turnPage), 600);
-        audio.src = `audios/${surahNumber}.mp3`;
+
+        audio.src = `${ARCHIVE_BASE}${surahNumber}.mp3`;
         audio.load();
+
         trackName.textContent = `السورة: ${surah.name}`;
         playPauseBtn.textContent = "▶";
         isPlaying = false;
@@ -364,32 +372,51 @@
       // Play / Pause
       playPauseBtn.addEventListener("click", () => {
         if (!audio.src) return;
-        if (isPlaying) { audio.pause(); playPauseBtn.textContent = "▶"; }
-        else { audio.play(); playPauseBtn.textContent = "⏸"; }
+        if (isPlaying) {
+          audio.pause();
+          playPauseBtn.textContent = "▶";
+        } else {
+          audio.play();
+          playPauseBtn.textContent = "⏸";
+        }
         isPlaying = !isPlaying;
       });
-      forwardBtn.addEventListener("click", () => { audio.currentTime += 10; });
-      backwardBtn.addEventListener("click", () => { audio.currentTime -= 10; });
+
+      forwardBtn.addEventListener("click", () => {
+        audio.currentTime += 10;
+      });
+      backwardBtn.addEventListener("click", () => {
+        audio.currentTime -= 10;
+      });
 
       // Progress bar
       const progress = document.getElementById("progress");
-      audio.addEventListener("timeupdate", () => { progress.value = (audio.currentTime / audio.duration) * 100 || 0; });
-      progress.addEventListener("input", () => { audio.currentTime = (progress.value / 100) * audio.duration; });
 
+      audio.addEventListener("timeupdate", () => {
+        progress.value = (audio.currentTime / audio.duration) * 100 || 0;
+      });
 
+      progress.addEventListener("input", () => {
+        audio.currentTime = (progress.value / 100) * audio.duration;
+      });
+
+      // Timer helpers
       function formatTime(seconds) {
         if (isNaN(seconds)) return "0:00";
         const min = Math.floor(seconds / 60);
         const sec = Math.floor(seconds % 60);
         return `${min}:${sec < 10 ? "0" : ""}${sec}`;
       }
+
       audio.addEventListener("loadedmetadata", () => {
         durationEl.textContent = formatTime(audio.duration);
       });
+
       audio.addEventListener("timeupdate", () => {
         progress.value = (audio.currentTime / audio.duration) * 100 || 0;
         currentTimeEl.textContent = formatTime(audio.currentTime);
       });
+
       currentTimeEl.textContent = "0:00";
       durationEl.textContent = "0:00";
 
@@ -398,6 +425,7 @@
         isPlaying = false;
       });
 
+      // SECOND change listener (kept exactly as you had it)
       surahSelect.addEventListener("change", () => {
         if (!surahSelect.value) return;
         const surahNumber = parseInt(surahSelect.value, 10);
@@ -409,34 +437,6 @@
 
         playPauseBtn.textContent = "▶";
         isPlaying = false;
-
-        // Handle Surah 2 split
-        if (surahNumber === 2) {
-          const parts = ["audios/2_part0.mp3", "audios/2_part1.mp3"];
-          let currentPart = 0;
-
-          audio.src = parts[currentPart];
-          audio.load();
-          trackName.textContent = `السورة: ${surah.name}`;
-
-          audio.onended = () => {
-            currentPart++;
-
-            if (currentPart < parts.length) {
-              audio.src = parts[currentPart];
-              audio.load();
-
-              // s keep state in sync
-              audio.play();
-              isPlaying = true;
-              playPauseBtn.textContent = "⏸";
-            } else {
-              // only reset when ALL parts finish
-              isPlaying = false;
-              playPauseBtn.textContent = "▶";
-            }
-          };
-        }
 
       });
 
