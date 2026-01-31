@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Title (VERY important) -->
+  <title>محكم – مصحف تفاعلي لقراءة القرآن الكريم والاستماع للتلاوة</title>
+
+  <!-- Description (used by Google) -->
+  <meta name="description"
+    content="محكم هو مصحف تفاعلي لقراءة القرآن الكريم صفحةً صفحة، والتنقل بين السور، والاستماع إلى التلاوة بتصميم هادئ وسهل الاستخدام." />
+
+  <meta name="author" content="Abdullah Salem" />
+  <meta http-equiv="Content-Language" content="ar" />
+
+  <!-- Open Graph (Google, WhatsApp, Facebook, Discord) -->
+  <meta property="og:title" content="محكم – مصحف تفاعلي للقرآن الكريم" />
+  <meta property="og:description" content="اقرأ واستمع إلى القرآن الكريم عبر مصحف تفاعلي بتصميم بسيط وهادئ." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://abdulahsalem.github.io/muhkam/" />
+  <meta property="og:locale" content="ar_AR" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Favicon (optional but recommended) -->
+  <link rel="icon" href="favicon.ico" />
+
+  <!-- Structured Data (Arabic rich results) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Book",
+    "name": "القرآن الكريم",
+    "alternateName": "محكم",
+    "inLanguage": "ar",
+    "about": "القرآن الكريم",
+    "publisher": {
+      "@type": "Organization",
+      "name": "محكم"
+    },
+    "url": "https://abdulahsalem.github.io/muhkam/"
+  }
+  </script>
+
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZLJ986Q8XW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-ZLJ986Q8XW');
+  </script>
+
+</head>
+
+
+
+
+<body>
+
+  <main class="page-content">
+
+    <div class="center-area">
+
+      <!-- Flipbook -->
+      <div class="flipbook" id="flipbook">
+
+        <!-- Front cover -->
+        <div class="hard">
+          <img src="images/cover.png" alt="غلاف المصحف الشريف – موقع محكم" class="cover-image">
+        </div>
+        <div class="hard"></div>
+
+        <!-- Quran pages injected by JS -->
+
+        <!-- Back cover -->
+        <div class="hard"></div>
+        <div class="hard">
+          <img src="images/cover.png" alt="Cover Design" class="cover-image">
+        </div>
+
+      </div>
+
+
+      <!-- Controls -->
+      <div class="controls">
+        <label for="casingColor">لون الغلاف</label>
+        <input type="color" id="casingColor" value="#c0392b">
+      </div>
+
+
+      <div class="controls-container">
+        <div class="surah-controls">
+          <label for="surahSelect">قائمة السور</label>
+          <select id="surahSelect">
+            <option value="">اختر سورة</option>
+          </select>
+        </div>
+
+        <div class="audio-player">
+
+          <div class="audio-title">مشغل التلاوة</div>
+          <div class="audio-title">القارئ أحمد كاسب</div>
+          <div class="track-name" id="trackName">اختر سورة لتشغيلها</div>
+          <input type="range" id="progress" value="0" min="0" max="100">
+          <div class="audio-controls">
+            <button id="backward">❮❮</button>
+            <button id="playPause">▶</button>
+            <button id="forward">❯❯</button>
+          </div>
+          <audio id="surahAudio"></audio>
+          <audio id="surahAudio" preload="auto"></audio>
+
+          <div id="timer">
+            <span id="current">0:00</span> / <span id="duration">0:00</span>
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+
+
+
+
+
+
+
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <p>© <span lang="ar">مشروع مُحْكَم – القرآن الكريم</span></p>
+      <p lang="ar"> موقع محكم — مشروع غير ربحي لنشر كتاب الله تعالى.
+        نسأل الله أن يجعله صدقة جارية.</p>لا تنسَ الدعاء لصاحب هذا العمل ولوالديه.</p>
+    </div>
+  </footer>
+
+</body>
+
+
+
+
+
+<body>
+  <!-- Flipbook --
+  <h1>القرآن الكريم – Muḥkam</h1>
+  <p>
+    Muḥkam is a digital Mushaf that presents the Holy Qur’an
+    in a realistic book format, respecting traditional page order.
+  </p>         -->
+
+
+  <!-- Flipbook -->
+
+  <main>
+
+    <!-- Scripts -->
+    <script src="jquery.js"></script>
+    <script src="turn.js"></script>
+
+    <script>
+      const root = document.documentElement;
+      const picker = document.getElementById("casingColor");
+      const flipbook = document.getElementById("flipbook");
+
+      // Generate Quran pages (604 → 1)
+      for (let i = 604; i >= 1; i--) {
+        const page = document.createElement("div");
+        page.innerHTML = `<img src="pages/${i}.png" alt="صفحة ${i} من القرآن الكريم">`;
+
+        // Insert before last two hard pages
+        flipbook.insertBefore(
+          page,
+          flipbook.children[flipbook.children.length - 1]
+        );
+      }
+
+      // Initialize flipbook AFTER pages exist
+      $(".flipbook").turn({
+        width: 1000,
+        height: 600,
+        autoCenter: true
+      });
+
+      // Load saved color
+      const savedColor = localStorage.getItem("hardColor");
+      if (savedColor) {
+        root.style.setProperty("--hard-color", savedColor);
+        picker.value = savedColor;
+      }
+
+      // Update hard page color
+      picker.addEventListener("input", () => {
+        root.style.setProperty("--hard-color", picker.value);
+        localStorage.setItem("hardColor", picker.value);
+      });
+
+
+      const surahs = [
+        { number: 1, name: "الفاتحة", page: 1 },
+        { number: 2, name: "البقرة", page: 2 },
+        { number: 3, name: "آل عمران", page: 50 },
+        { number: 4, name: "النساء", page: 77 },
+        { number: 5, name: "المائدة", page: 106 },
+        { number: 6, name: "الأنعام", page: 128 },
+        { number: 7, name: "الأعراف", page: 151 },
+        { number: 8, name: "الأنفال", page: 177 },
+        { number: 9, name: "التوبة", page: 187 },
+        { number: 10, name: "يونس", page: 208 },
+        { number: 11, name: "هود", page: 221 },
+        { number: 12, name: "يوسف", page: 235 },
+        { number: 13, name: "الرعد", page: 249 },
+        { number: 14, name: "إبراهيم", page: 255 },
+        { number: 15, name: "الحجر", page: 262 },
+        { number: 16, name: "النحل", page: 267 },
+        { number: 17, name: "الإسراء", page: 282 },
+        { number: 18, name: "الكهف", page: 293 },
+        { number: 19, name: "مريم", page: 305 },
+        { number: 20, name: "طه", page: 312 },
+        { number: 21, name: "الأنبياء", page: 322 },
+        { number: 22, name: "الحج", page: 332 },
+        { number: 23, name: "المؤمنون", page: 342 },
+        { number: 24, name: "النور", page: 350 },
+        { number: 25, name: "الفرقان", page: 359 },
+        { number: 26, name: "الشعراء", page: 367 },
+        { number: 27, name: "النمل", page: 377 },
+        { number: 28, name: "القصص", page: 385 },
+        { number: 29, name: "العنكبوت", page: 396 },
+        { number: 30, name: "الروم", page: 404 },
+        { number: 31, name: "لقمان", page: 411 },
+        { number: 32, name: "السجدة", page: 415 },
+        { number: 33, name: "الأحزاب", page: 418 },
+        { number: 34, name: "سبأ", page: 428 },
+        { number: 35, name: "فاطر", page: 434 },
+        { number: 36, name: "يس", page: 440 },
+        { number: 37, name: "الصافات", page: 446 },
+        { number: 38, name: "ص", page: 453 },
+        { number: 39, name: "الزمر", page: 458 },
+        { number: 40, name: "غافر", page: 467 },
+        { number: 41, name: "فصلت", page: 477 },
+        { number: 42, name: "الشورى", page: 483 },
+        { number: 43, name: "الزخرف", page: 489 },
+        { number: 44, name: "الدخان", page: 496 },
+        { number: 45, name: "الجاثية", page: 499 },
+        { number: 46, name: "الأحقاف", page: 502 },
+        { number: 47, name: "محمد", page: 507 },
+        { number: 48, name: "الفتح", page: 511 },
+        { number: 49, name: "الحجرات", page: 515 },
+        { number: 50, name: "ق", page: 518 },
+        { number: 51, name: "الذاريات", page: 520 },
+        { number: 52, name: "الطور", page: 523 },
+        { number: 53, name: "النجم", page: 526 },
+        { number: 54, name: "القمر", page: 528 },
+        { number: 55, name: "الرحمن", page: 531 },
+        { number: 56, name: "الواقعة", page: 534 },
+        { number: 57, name: "الحديد", page: 537 },
+        { number: 58, name: "المجادلة", page: 542 },
+        { number: 59, name: "الحشر", page: 545 },
+        { number: 60, name: "الممتحنة", page: 549 },
+        { number: 61, name: "الصف", page: 551 },
+        { number: 62, name: "الجمعة", page: 553 },
+        { number: 63, name: "المنافقون", page: 554 },
+        { number: 64, name: "التغابن", page: 556 },
+        { number: 65, name: "الطلاق", page: 558 },
+        { number: 66, name: "التحريم", page: 560 },
+        { number: 67, name: "الملك", page: 562 },
+        { number: 68, name: "القلم", page: 564 },
+        { number: 69, name: "الحاقة", page: 566 },
+        { number: 70, name: "المعارج", page: 568 },
+        { number: 71, name: "نوح", page: 570 },
+        { number: 72, name: "الجن", page: 572 },
+        { number: 73, name: "المزمل", page: 574 },
+        { number: 74, name: "المدثر", page: 575 },
+        { number: 75, name: "القيامة", page: 577 },
+        { number: 76, name: "الإنسان", page: 578 },
+        { number: 77, name: "المرسلات", page: 580 },
+        { number: 78, name: "النبأ", page: 582 },
+        { number: 79, name: "النازعات", page: 583 },
+        { number: 80, name: "عبس", page: 585 },
+        { number: 81, name: "التكوير", page: 586 },
+        { number: 82, name: "الانفطار", page: 587 },
+        { number: 83, name: "المطففين", page: 587 },
+        { number: 84, name: "الانشقاق", page: 589 },
+        { number: 85, name: "البروج", page: 590 },
+        { number: 86, name: "الطارق", page: 591 },
+        { number: 87, name: "الأعلى", page: 591 },
+        { number: 88, name: "الغاشية", page: 592 },
+        { number: 89, name: "الفجر", page: 593 },
+        { number: 90, name: "البلد", page: 594 },
+        { number: 91, name: "الشمس", page: 595 },
+        { number: 92, name: "الليل", page: 595 },
+        { number: 93, name: "الضحى", page: 596 },
+        { number: 94, name: "الشرح", page: 596 },
+        { number: 95, name: "التين", page: 597 },
+        { number: 96, name: "العلق", page: 597 },
+        { number: 97, name: "القدر", page: 598 },
+        { number: 98, name: "البينة", page: 598 },
+        { number: 99, name: "الزلزلة", page: 599 },
+        { number: 100, name: "العاديات", page: 599 },
+        { number: 101, name: "القارعة", page: 600 },
+        { number: 102, name: "التكاثر", page: 600 },
+        { number: 103, name: "العصر", page: 601 },
+        { number: 104, name: "الهمزة", page: 601 },
+        { number: 105, name: "الفيل", page: 602 },
+        { number: 106, name: "قريش", page: 602 },
+        { number: 107, name: "الماعون", page: 603 },
+        { number: 108, name: "الكوثر", page: 603 },
+        { number: 109, name: "الكافرون", page: 604 },
+        { number: 110, name: "النصر", page: 604 },
+        { number: 111, name: "المسد", page: 604 },
+        { number: 112, name: "الإخلاص", page: 604 },
+        { number: 113, name: "الفلق", page: 604 },
+        { number: 114, name: "الناس", page: 604 }
+      ];
+
+
+
+      const surahSelect = document.getElementById("surahSelect");
+      const TOTAL_PAGES = 604;
+      const audio = document.getElementById("surahAudio");
+      const trackName = document.getElementById("trackName");
+      const playPauseBtn = document.getElementById("playPause");
+      const forwardBtn = document.getElementById("forward");
+      const backwardBtn = document.getElementById("backward");
+      const currentTimeEl = document.getElementById("current");
+      const durationEl = document.getElementById("duration");
+
+      const ARCHIVE_BASE = "https://archive.org/download/muhkam_202601/";
+
+      let isPlaying = false;
+
+      // Populate selector
+      surahs.forEach(surah => {
+        const option = document.createElement("option");
+        option.value = surah.number;
+        option.textContent = surah.name;
+        surahSelect.appendChild(option);
+      });
+
+      // Surah change
+      surahSelect.addEventListener("change", () => {
+        if (!surahSelect.value) return;
+        const surahNumber = parseInt(surahSelect.value, 10);
+        const surah = surahs.find(s => s.number === surahNumber);
+        const turnPage = (TOTAL_PAGES - surah.page) + 4;
+
+        $(".flipbook").turn("page", 2);
+        setTimeout(() => $(".flipbook").turn("page", turnPage), 600);
+
+        audio.src = `${ARCHIVE_BASE}${surahNumber}.mp3`;
+        audio.load();
+
+        trackName.textContent = `السورة: ${surah.name}`;
+        playPauseBtn.textContent = "▶";
+        isPlaying = false;
+      });
+
+      // Play / Pause
+      playPauseBtn.addEventListener("click", () => {
+        if (!audio.src) return;
+        if (isPlaying) {
+          audio.pause();
+          playPauseBtn.textContent = "▶";
+        } else {
+          audio.play();
+          playPauseBtn.textContent = "⏸";
+        }
+        isPlaying = !isPlaying;
+      });
+
+      forwardBtn.addEventListener("click", () => {
+        audio.currentTime += 10;
+      });
+      backwardBtn.addEventListener("click", () => {
+        audio.currentTime -= 10;
+      });
+
+      // Progress bar
+      const progress = document.getElementById("progress");
+
+      audio.addEventListener("timeupdate", () => {
+        progress.value = (audio.currentTime / audio.duration) * 100 || 0;
+      });
+
+      progress.addEventListener("input", () => {
+        audio.currentTime = (progress.value / 100) * audio.duration;
+      });
+
+      // Timer helpers
+      function formatTime(seconds) {
+        if (isNaN(seconds)) return "0:00";
+        const min = Math.floor(seconds / 60);
+        const sec = Math.floor(seconds % 60);
+        return `${min}:${sec < 10 ? "0" : ""}${sec}`;
+      }
+
+      audio.addEventListener("loadedmetadata", () => {
+        durationEl.textContent = formatTime(audio.duration);
+      });
+
+      audio.addEventListener("timeupdate", () => {
+        progress.value = (audio.currentTime / audio.duration) * 100 || 0;
+        currentTimeEl.textContent = formatTime(audio.currentTime);
+      });
+
+      currentTimeEl.textContent = "0:00";
+      durationEl.textContent = "0:00";
+
+      audio.addEventListener("ended", () => {
+        playPauseBtn.textContent = "▶";
+        isPlaying = false;
+      });
+
+      // SECOND change listener (kept exactly as you had it)
+      surahSelect.addEventListener("change", () => {
+        if (!surahSelect.value) return;
+        const surahNumber = parseInt(surahSelect.value, 10);
+        const surah = surahs.find(s => s.number === surahNumber);
+        const turnPage = (TOTAL_PAGES - surah.page) + 4;
+
+        $(".flipbook").turn("page", 2);
+        setTimeout(() => $(".flipbook").turn("page", turnPage), 600);
+
+        playPauseBtn.textContent = "▶";
+        isPlaying = false;
+
+      });
+
+
+
+
+
+
+    </script>
+  </main>
+
+
+</body>
+
+</html>
