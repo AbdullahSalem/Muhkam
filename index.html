@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
 
 
@@ -178,6 +177,8 @@
       const picker = document.getElementById("casingColor");
       const flipbook = document.getElementById("flipbook");
 
+
+
       // Generate Quran pages (604 → 1)
       for (let i = 604; i >= 1; i--) {
         const page = document.createElement("div");
@@ -190,12 +191,59 @@
         );
       }
 
-      // Initialize flipbook AFTER pages exist
-      $(".flipbook").turn({
-        width: 1000,
-        height: 600,
-        autoCenter: true
-      });
+      const isMobile = window.innerWidth <= 1024;
+
+      if (!isMobile) {
+        // Desktop: flipbook with turn.js
+        $(".flipbook").turn({
+          width: 1000,
+          height: 600,
+          autoCenter: true
+        });
+      } else {
+        // Mobile stacked pages
+        const flipbook = document.getElementById("flipbook");
+
+        // Destroy turn.js if initialized
+        if ($('#flipbook').data('turn')) {
+          $('#flipbook').turn('destroy');
+        }
+
+        // Make flipbook visible
+        flipbook.style.display = "block";
+        flipbook.style.width = "100%";
+        flipbook.style.height = "auto";
+        flipbook.style.position = "relative";
+        flipbook.style.left = "0";
+        flipbook.style.transform = "none";
+
+        // Reset each page
+        if ($('#flipbook').data('turn')) $('#flipbook').turn('destroy');
+
+        const pages = flipbook.querySelectorAll('.hard, .page');
+        pages.forEach(p => {
+          p.style.display = "block";
+          p.style.width = "100%";
+          p.style.height = "auto";
+          p.style.marginBottom = "12px";
+          p.style.position = "relative";
+          p.style.left = "0";
+          p.style.transform = "none";
+        });
+
+        // Enable scrolling in page-content
+        const pageContent = document.querySelector('.page-content');
+        pageContent.style.overflowY = "auto";
+        pageContent.style.overflowX = "hidden";
+      };
+
+
+
+
+
+
+
+
 
       // Load saved color
       const savedColor = localStorage.getItem("hardColor");
@@ -353,22 +401,54 @@
       });
 
       // Surah change
+      // Surah change
+      const TOTAL_FLIPBOOK_PAGES = 606; // actual total pages in flipbook including hard pages
+      const TOTAL_HARD_PAGES = 2; // front and back cover
+
+      // Surah change handler
       surahSelect.addEventListener("change", () => {
         if (!surahSelect.value) return;
+
         const surahNumber = parseInt(surahSelect.value, 10);
         const surah = surahs.find(s => s.number === surahNumber);
-        const turnPage = (TOTAL_PAGES - surah.page) + 4;
 
-        $(".flipbook").turn("page", 2);
-        setTimeout(() => $(".flipbook").turn("page", turnPage), 600);
+        if (!surah) return;
 
+        // Desktop flipbook
+        if (!isMobile) {
+          const pickerContainer = document.getElementById("casingColor")?.parentElement;
+          if (pickerContainer) {
+            pickerContainer.remove(); // completely remove from DOM
+          }
+          const turnPage = (TOTAL_PAGES - surah.page);
+          $(".flipbook").turn("page", 1);
+          setTimeout(() => $(".flipbook").turn("page", turnPage));
+        }
+        // Mobile stacked pages
+        else {
+          // index of page in DOM: 1 hard page at start + reversed index
+          const contentPages = flipbook.querySelectorAll('.page'); // ignore hard pages
+          const reverseIndex = TOTAL_PAGES - surah.page;
+          const pageDiv = flipbook.children[reverseIndex + 3]; // <-- 1 for the front hard page
+          const mobileIndex = contentPages.length - surah.page; // reverse mapping
+
+
+
+          if (pageDiv) pageDiv.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        // Audio
         audio.src = `${ARCHIVE_BASE}${surahNumber}.mp3`;
         audio.load();
-
         trackName.textContent = `السورة: ${surah.name}`;
         playPauseBtn.textContent = "▶";
         isPlaying = false;
       });
+
+
+
+
+
 
       // Play / Pause
       playPauseBtn.addEventListener("click", () => {
@@ -446,11 +526,12 @@
 
 
 
+
+
     </script>
   </main>
 
 
 </body>
-
 
 </html>
