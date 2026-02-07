@@ -1,0 +1,620 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+:root {
+    --hard-color: #8CA08D;
+    /* default hard page color */
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.page-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-area {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    background: #ffffff;
+}
+
+.flipbook {
+    direction: ltr;
+    /* override global rtl */
+    unicode-bidi: embed;
+    /* prevent text mirroring */
+    width: 1000px;
+    height: 600px;
+    margin: auto;
+}
+
+.flipbook .hard,
+.flipbook .page {
+    width: 1000px;
+    height: 600px;
+    display: block;
+}
+
+.flipbook .hard {
+    background-color: var(--hard-color) !important;
+    color: #fff;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.flipbook .hard .cover-image {
+    width: 90%;
+    height: auto;
+    pointer-events: none;
+}
+
+.flipbook .page {
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.11);
+}
+
+.page img {
+    width: 70%;
+    object-fit: cover;
+    margin: auto;
+}
+
+.flipbook small {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.site-footer {
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.footer-container {
+    background-color: var(--hard-color);
+    color: #fff;
+    text-align: center;
+    padding: 16px 12px;
+    direction: rtl;
+    font-size: 14px;
+}
+
+/* Controls */
+.controls {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #ffffffcc;
+    padding: 10px 14px;
+    border-radius: 8px;
+    z-index: 9999;
+}
+
+/* Surah selector container */
+.surah-controls {
+    position: fixed;
+    top: 20px;
+    left: 10px;
+    z-index: 9999;
+    background: #ffffff;
+    border: 2px solid var(--hard-color);
+    border-radius: 12px;
+    padding: 12px 14px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    font-family: "Amiri", "Scheherazade New", serif;
+    direction: rtl;
+}
+
+.surah-controls label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    text-align: right;
+}
+
+.surah-controls select {
+    width: 200px;
+    padding: 8px 10px;
+    font-size: 16px;
+    font-family: inherit;
+    direction: rtl;
+    text-align: right;
+    border-radius: 8px;
+    border: 1.5px solid var(--hard-color);
+    background-color: #fafafa;
+    cursor: pointer;
+}
+
+.surah-controls select:hover,
+.surah-controls select:focus {
+    border-color: #1e8449;
+    background-color: #fff;
+}
+
+.surah-controls option {
+    direction: rtl;
+    text-align: right;
+    font-size: 15px;
+}
+
+/* Audio Player */
+.controls-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 150px;
+    left: 10px;
+    z-index: 9999;
+}
+
+.controls-container>* {
+    margin-bottom: 12px;
+}
+
+.audio-player {
+    width: 230px;
+    /* choose what looks best: 220–260px */
+    max-width: 230px;
+    background: #fff;
+    border: 2px solid var(--hard-color);
+    border-radius: 12px;
+    padding: 12px 14px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    direction: rtl;
+}
+
+.audio-player .audio-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.audio-player .track-name {
+    font-size: 14px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+.audio-player input[type=range] {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.audio-controls {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.audio-controls button {
+    flex: 1;
+    margin: 0 2px;
+    padding: 6px 0;
+    font-size: 18px;
+    border: none;
+    background-color: var(--hard-color);
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.audio-controls button:hover {
+    background-color: #000;
+}
+
+#timer {
+    text-align: center;
+    font-size: 13px;
+    margin-top: 8px;
+    opacity: 0.85;
+    letter-spacing: 0.5px;
+}
+
+/* ===================== MOBILE ===================== */
+@media (max-width: 1024px) {
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+    }
+
+    :root {
+        --hard-color: #8CA08D;
+    }
+
+    #casingColor,
+    #casingColor-label,
+    /* if you have a label */
+    .controls {
+        /* container holding the color picker button */
+        display: none !important;
+    }
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        overflow-y: auto;
+        /* allow scrolling on mobile */
+        display: block;
+        /* remove flex for mobile */
+    }
+
+    .page-content {
+        display: block;
+        width: 100%;
+        height: auto;
+        padding-top: 80px;
+        /* room for Surah selector */
+        padding-bottom: 140px;
+        /* room for audio + footer */
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .center-area {
+        display: block;
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        padding: 0 8px;
+        background: #fff;
+    }
+
+    /* Flipbook */
+    .flipbook {
+        direction: ltr;
+        unicode-bidi: embed;
+        width: 100%;
+        /* fill screen */
+        max-width: 100%;
+        /* prevent horizontal scroll */
+        height: auto !important;
+    }
+
+    .flipbook .hard,
+    .flipbook .page {
+        display: block;
+        width: 100% !important;
+        height: auto !important;
+        margin-bottom: 12px;
+        position: relative;
+        transform: none;
+        box-sizing: border-box;
+    }
+
+    /* Hard pages */
+    .flipbook .hard {
+        background-color: var(--hard-color) !important;
+        color: #fff;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+    }
+
+    .flipbook .hard .cover-image {
+        width: 90%;
+        height: auto;
+        pointer-events: none;
+    }
+
+    /* Flipbook page content */
+    .flipbook .page {
+        background: #fff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .flipbook img {
+        width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Footer */
+
+
+    .site-footer {
+        position: fixed;
+        /* keeps it at bottom on mobile */
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--hard-color, #8CA08D);
+        color: #fff;
+        text-align: center;
+        padding: 6px 0;
+        /* reduced from 12px */
+        font-size: 14px;
+        direction: rtl;
+        z-index: 998;
+        /* below audio player */
+    }
+
+    /* Footer text container */
+    .footer-container {
+        background-color: var(--hard-color, #8CA08D);
+        color: #fff;
+        text-align: center;
+        padding: 6px 12px;
+        /* reduced from 16–18px */
+        font-size: 14px;
+        direction: rtl;
+    }
+
+    .footer-container p {
+        margin: 1px 0;
+    }
+
+
+    /* Controls */
+    .controls {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #ffffffcc;
+        padding: 10px 14px;
+        border-radius: 8px;
+        z-index: 9999;
+    }
+
+    /* Surah selector */
+    .surah-controls {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        background: #fff;
+        border: 2px solid var(--hard-color, #8CA08D);
+        border-radius: 12px;
+        padding: 12px 14px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        width: 90%;
+        max-width: 300px;
+        direction: rtl;
+    }
+
+    .surah-controls label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .surah-controls select {
+        width: 100%;
+        padding: 8px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1.5px solid var(--hard-color, #8CA08D);
+        background-color: #fafafa;
+        text-align: right;
+        direction: rtl;
+        outline: none;
+        cursor: pointer;
+        position: relative;
+        z-index: 10000;
+    }
+
+    .surah-controls select:hover,
+    .surah-controls select:focus {
+        border-color: #1e8449;
+        background-color: #fff;
+    }
+
+    /* Audio Player */
+    .audio-player {
+        position: fixed;
+        bottom: 90px;
+        /* above footer */
+        left: 50%;
+        /* center horizontally */
+        transform: translateX(-50%);
+        /* offset by half width */
+        width: 70%;
+        /* your new width */
+        max-width: 100%;
+        padding: 6px 8px;
+        box-sizing: border-box;
+        background: #fff;
+        border: 2px solid var(--hard-color, #8CA08D);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+    }
+
+    .audio-player .audio-title {
+        font-weight: 600;
+        margin-bottom: 4px;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .audio-player .track-name {
+        font-size: 13px;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    .audio-controls {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .audio-controls button {
+        flex: 1;
+        margin: 0 2px;
+        padding: 6px 0;
+        font-size: 16px;
+        border: none;
+        background-color: var(--hard-color, #8CA08D);
+        color: #fff;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .audio-controls button:hover {
+        background-color: #000;
+    }
+
+    #timer {
+        text-align: center;
+        font-size: 13px;
+        margin-top: 8px;
+        opacity: 0.85;
+        letter-spacing: 0.5px;
+    }
+
+    /* Small phones adjustments */
+    @media (max-width: 480px) {
+        .surah-controls {
+            padding: 6px 8px;
+        }
+
+        .surah-controls select {
+            font-size: 14px;
+        }
+
+        .audio-player {
+            padding: 6px 8px;
+        }
+
+        .audio-controls button {
+            font-size: 14px;
+            padding: 4px 0;
+        }
+    }
+
+}
+
+
+.quran-page {
+    position: relative;
+}
+
+.page-left-hitbox,
+.page-right-hitbox {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 20;
+    cursor: pointer;
+}
+
+.page-left-hitbox {
+    left: 0;
+}
+
+.page-right-hitbox {
+    right: 0;
+}
+
+
+/* ===================== TAFSIR ===================== */
+
+@media (min-width: 1025px) {
+    .tafsir-container {
+        position: absolute;
+        top: 20px;
+        right: 10px;
+        width: 240px;
+
+        max-height: 600px;
+        /* collapsed */
+        background: #fff;
+        border: 2px solid var(--hard-color, #8CA08D);
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        font-family: "Amiri", serif;
+        z-index: 9999;
+    }
+
+    .tafsir-container.expanded {
+        max-height: 79vh;
+        /* control expansion here */
+    }
+
+    .tafsir-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 12px;
+        font-weight: 600;
+        cursor: pointer;
+        height: 42px;
+        /* important */
+    }
+
+    .tafsir-content {
+        padding: 8px 12px;
+        font-size: 14px;
+        line-height: 1.6;
+
+        overflow-y: auto;
+
+        /* make content take full container minus header */
+        max-height: calc(79vh - 42px);
+        /* subtract header height */
+    }
+
+
+
+
+}
