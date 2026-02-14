@@ -73,7 +73,7 @@
         </div>
         <div class="hard"></div>
 
-        <!-- Quran pages injected by JS -->
+
 
         <!-- Back cover -->
         <div class="hard"></div>
@@ -241,6 +241,23 @@
           $('#flipbook').turn('destroy');
         }
 
+
+
+
+
+        // ===============================
+        // MOBILE ONLY → FIX PAGE ORDER
+        // ===============================
+
+        // get all Quran pages only (ignore hard covers)
+        const quranPages = Array.from(
+          flipbook.querySelectorAll('.page')
+        );
+
+        // reverse them to be 1 → 604 instead of 604 → 1
+        quranPages.reverse().forEach(p => flipbook.appendChild(p));
+
+
         // Make flipbook visible
         flipbook.style.display = "block";
         flipbook.style.width = "100%";
@@ -248,6 +265,29 @@
         flipbook.style.position = "relative";
         flipbook.style.left = "0";
         flipbook.style.transform = "none";
+
+
+
+        const children = Array.from(flipbook.children);
+
+        // get ALL hard sides (covers)
+        const hardPages = children.filter(el => el.classList.contains("hard"));
+
+        // get Quran pages
+
+        // first 2 hard = front cover
+        const frontCover = hardPages.slice(0, 2);
+
+        // last 2 hard = back cover
+        const backCover = hardPages.slice(-2);
+
+        // reverse Quran pages to go from Fatiha → Nas
+
+        // clear flipbook
+        flipbook.innerHTML = "";
+
+
+
 
         // Reset each page
         if ($('#flipbook').data('turn')) $('#flipbook').turn('destroy');
@@ -267,9 +307,13 @@
         const pageContent = document.querySelector('.page-content');
         pageContent.style.overflowY = "auto";
         pageContent.style.overflowX = "hidden";
+
+
+        // rebuild in correct order
+        frontCover.forEach(el => flipbook.appendChild(el)); // first cover
+        quranPages.forEach(el => flipbook.appendChild(el)); // pages 1→604
+        backCover.forEach(el => flipbook.appendChild(el));  // last cover
       };
-
-
 
 
 
@@ -455,10 +499,11 @@
         // Mobile stacked pages
         else {
           const contentPages = flipbook.querySelectorAll('.page');
-          const mobileIndex = surah.page - 1;
+          const mobileIndex = surah.page;
           const pageDiv = contentPages[mobileIndex];
           if (pageDiv) pageDiv.scrollIntoView({ behavior: "smooth", block: "start" });
         }
+
 
 
         // Audio Control
